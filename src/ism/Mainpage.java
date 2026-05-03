@@ -134,6 +134,8 @@ public class Mainpage extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
+        jButton26 = new javax.swing.JButton();
+
         jPanel6 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jTextField7 = new javax.swing.JTextField();
@@ -884,6 +886,8 @@ public class Mainpage extends javax.swing.JFrame {
 
         jTextField4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jTextField4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextField4.setEditable(false);
+
         jTextField4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jTextField4MouseExited(evt);
@@ -892,6 +896,8 @@ public class Mainpage extends javax.swing.JFrame {
 
         jTextField5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jTextField5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextField5.setEditable(false);
+
 
         jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         jLabel21.setText("Item_Id:");
@@ -911,6 +917,8 @@ public class Mainpage extends javax.swing.JFrame {
         jTextField1
                 .setFont(jTextField1.getFont().deriveFont(jTextField1.getFont().getStyle() | java.awt.Font.BOLD, 18));
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextField1.setEditable(false);
+
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -920,6 +928,8 @@ public class Mainpage extends javax.swing.JFrame {
         jTextField2
                 .setFont(jTextField2.getFont().deriveFont(jTextField2.getFont().getStyle() | java.awt.Font.BOLD, 18));
         jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextField2.setEditable(false);
+
 
         jTextField3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jTextField3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1217,6 +1227,17 @@ public class Mainpage extends javax.swing.JFrame {
             }
         });
 
+
+        jButton26.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton26.setText("CLEAR");
+        jButton26.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
+
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -1231,14 +1252,16 @@ public class Mainpage extends javax.swing.JFrame {
                                                 .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout
                                                         .createSequentialGroup()
-                                                        .addGap(215, 215, 215)
+                                                        .addGap(150, 150, 150)
                                                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(
-                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(18, 18, 18)
                                                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING,
                                                         jPanel5Layout.createSequentialGroup()
                                                                 .addGap(117, 117, 117)
@@ -1258,7 +1281,9 @@ public class Mainpage extends javax.swing.JFrame {
                                 .addGap(36, 36, 36)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton7)
+                                        .addComponent(jButton26)
                                         .addComponent(jButton8))
+
                                 .addContainerGap(119, Short.MAX_VALUE)));
 
         jTabbedPane2.addTab("tab4", jPanel5);
@@ -2853,41 +2878,59 @@ public class Mainpage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        String qun = jTextField3.getText();
-        String pri = jTextField4.getText();
-        int N3 = Integer.parseInt(pri);
-        int N1 = Integer.parseInt(qun);
-        int N4 = N1 * N3;
-        jTextField5.setText(String.valueOf(N4));
         String item_id = jTextField1.getText();
-        String item_name = jTextField2.getText();
-        String quantity = jTextField3.getText();
-        String price = jTextField4.getText();
-        String totprice = jTextField5.getText();
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection con = DatabaseConnection.getConnection();
-            String query = "insert into cart(item_id,item_name,quantity,price,totprice) values('" + item_id + "','"
-                    + item_name + "','" + quantity + "','" + price + "','" + totprice + "')";
-            Statement smt3 = con.createStatement();
-            // ResultSet rs=smt3.executeQueryUpdate(query);
-
-            int success = smt3.executeUpdate(query);
-            if (success == 1) {
-                JOptionPane.showMessageDialog(this, "Product Successfully Added to cart ");
-                // emp1.showMessageDialog(this, "Problem in Saving. Retry");
-            } else {
-
-                JOptionPane.showMessageDialog(this, "Problem in Saving. Retry");
-            }
-
+        if (item_id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih produk dari tabel terlebih dahulu.");
+            return;
         }
 
-        catch (Exception e) {
+        String qun = jTextField3.getText();
+        String pri = jTextField4.getText();
+        
+        try {
+            double N3 = Double.parseDouble(pri);
+            double N1 = Double.parseDouble(qun);
+
+            Class.forName("org.postgresql.Driver");
+            Connection con = DatabaseConnection.getConnection();
+            Statement stmt = con.createStatement();
+            
+            // Validate against database stock
+            ResultSet rs = stmt.executeQuery("SELECT quantity FROM addproduct WHERE item_id='" + item_id + "'");
+            if (rs.next()) {
+                double availableStock = rs.getDouble("quantity");
+                if (availableStock <= 0) {
+                    JOptionPane.showMessageDialog(this, "Stok Habis");
+                    return;
+                }
+                if (N1 > availableStock) {
+                    JOptionPane.showMessageDialog(this, "Quantity tidak boleh melebihi stok yang ada (Maks: " + availableStock + ")");
+                    return;
+                }
+            }
+            rs.close();
+
+            double N4 = N1 * N3;
+            jTextField5.setText(String.format(java.util.Locale.US, "%.2f", N4));
+            String totprice = jTextField5.getText();
+
+            String query = "insert into cart(item_id,item_name,quantity,price,totprice) values('" + item_id + "','"
+                    + jTextField2.getText() + "','" + qun + "','" + pri + "','" + totprice + "')";
+
+            int success = stmt.executeUpdate(query);
+            if (success == 1) {
+                JOptionPane.showMessageDialog(this, "Product Successfully Added to cart ");
+            } else {
+                JOptionPane.showMessageDialog(this, "Problem in Saving. Retry");
+            }
+            stmt.close();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Format angka tidak valid pada Quantity.");
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
-        } // TODO add your handling code here:
+        }
     }// GEN-LAST:event_jButton3ActionPerformed
+
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -2971,6 +3014,12 @@ public class Mainpage extends javax.swing.JFrame {
         }
     }// GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+    }
+
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         jTabbedPane2.setSelectedIndex(8);
@@ -3005,11 +3054,14 @@ public class Mainpage extends javax.swing.JFrame {
                 model.addRow(new Object[] { id, name, qun, price1, mfd });
             }
             rs.close();
-            int sum = 0;
+            double sum = 0;
             for (int i = 0; i < jTable5.getRowCount(); i++) {
-                sum = sum + Integer.parseInt(jTable5.getValueAt(i, 4).toString());
+                sum = sum + Double.parseDouble(jTable5.getValueAt(i, 4).toString());
+
             }
-            jTextField19.setText(Integer.toString(sum));
+            jTextField19.setText(String.format(java.util.Locale.US, "%.2f", sum));
+
+
 
             // stmt.close();
             // con.close();
@@ -3017,123 +3069,90 @@ public class Mainpage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
             // e.printStackTrace();
         }
-        int sum = 0;
+        double sum = 0;
         for (int i = 0; i < jTable5.getRowCount(); i++) {
-            sum = sum + Integer.parseInt(jTable5.getValueAt(i, 5).toString());
+            sum = sum + Double.parseDouble(jTable5.getValueAt(i, 5).toString());
         }
-        jTextField19.setText(Integer.toString(sum));
+
+        jTextField19.setText(String.format(java.util.Locale.US, "%.2f", sum));
+
+
 
     }// GEN-LAST:event_jButton22ActionPerformed
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton23ActionPerformed
         // TODO add your handling code here:
-        Random r = new Random();
-        int a1 = r.nextInt(10000) + 1;
-        String a2 = Integer.toString(a1);
-        jTextField22.setText(a2);
+        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+        int rowCount = model.getRowCount();
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(this, "Keranjang belanja kosong. Silakan tambah produk terlebih dahulu.");
+            return;
+        }
 
-        Date thisdate = new Date();
-        SimpleDateFormat dateform = new SimpleDateFormat("dd-MM-YYYY");
-        String a3 = dateform.format(thisdate);
-        jTextField23.setText(a3);
-        workWithDatabase();
+        // Generate ONE Bill Number for the entire transaction
+        Random r = new Random();
+        String billNo = Integer.toString(r.nextInt(10000) + 1);
+        jTextField22.setText(billNo);
+
+        // Set current Date
+        String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        jTextField23.setText(dateStr);
 
         try {
-            DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
-            int selectedRowIndex = jTable5.getSelectedRow();
-            String a = model.getValueAt(selectedRowIndex, 0).toString();
-            String b = model.getValueAt(selectedRowIndex, 1).toString();
-            String c = model.getValueAt(selectedRowIndex, 2).toString();
-            String d = model.getValueAt(selectedRowIndex, 3).toString();
-            String e = model.getValueAt(selectedRowIndex, 4).toString();
-            String f = jTextField22.getText();
-            String g = jTextField23.getText();
             Class.forName("org.postgresql.Driver");
             Connection con = DatabaseConnection.getConnection();
-            String query = "insert into billmain(item_id,item_name,quantity,price,totprice,bill_no,date) values('" + a
-                    + "','" + b + "','" + c + "','" + d + "','" + e + "','" + f + "','" + g + "')";
-            Statement smt3 = con.createStatement();
+            
+            for (int i = 0; i < rowCount; i++) {
+                String itemId = model.getValueAt(i, 0).toString();
+                String itemName = model.getValueAt(i, 1).toString();
+                String qtyStr = model.getValueAt(i, 2).toString();
+                String priceStr = model.getValueAt(i, 3).toString();
+                String totPriceStr = model.getValueAt(i, 4).toString();
+                
+                double qtyToSubtract = Double.parseDouble(qtyStr);
 
-            int success = smt3.executeUpdate(query);
-            if (success == 1) {
-                JOptionPane.showMessageDialog(this, "Product Successfully Added to bill ");
-                // emp1.showMessageDialog(this, "Problem in Saving. Retry");
-            } else {
+                // 1. Insert into billmain
+                String insertQuery = "insert into billmain(item_id,item_name,quantity,price,totprice,bill_no,date) values('" 
+                    + itemId + "','" + itemName + "','" + qtyStr + "','" + priceStr + "','" + totPriceStr + "','" + billNo + "','" + dateStr + "')";
+                Statement smt = con.createStatement();
+                smt.executeUpdate(insertQuery);
+                smt.close();
 
-                JOptionPane.showMessageDialog(this, "Problem in Saving. Retry");
+                // 2. Update Stock in addproduct
+                Statement sSelect = con.createStatement();
+                ResultSet rs = sSelect.executeQuery("select quantity from addproduct where item_id='" + itemId + "'");
+                if (rs.next()) {
+                    double currentStock = rs.getDouble("quantity");
+                    double newStock = currentStock - qtyToSubtract;
+                    Statement sUpdate = con.createStatement();
+                    sUpdate.executeUpdate("Update addproduct set quantity=" + newStock + " where item_id='" + itemId + "'");
+                    sUpdate.close();
+                }
+                rs.close();
+                sSelect.close();
             }
 
+            // 3. Clear the Cart table in database
+            Statement sDelete = con.createStatement();
+            sDelete.executeUpdate("delete from cart");
+            sDelete.close();
+
+            JOptionPane.showMessageDialog(this, "Transaksi Berhasil! Semua item dalam keranjang telah diproses.");
+            
+            // 4. Update UI: Clear table and move to invoice
+            model.setRowCount(0);
+            jTabbedPane2.setSelectedIndex(9);
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(this, "Error saat memproses tagihan: " + e.getMessage());
         }
     }
 
-    public void workWithDatabase() {
-        Connection c = null;
-        Statement s = null;
-        ResultSet rs1 = null;
-        int flag = 0;
-        try {
 
-            Class.forName("org.postgresql.Driver");
-            c = DatabaseConnection.getConnection();
-            s = c.createStatement();
 
-            DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
-            int selectedRowIndex = jTable5.getSelectedRow();
-            String a = model.getValueAt(selectedRowIndex, 0).toString();
 
-            String c1 = model.getValueAt(selectedRowIndex, 2).toString();
 
-            String s1 = a;
 
-            // rs1 = s.executeQuery ("select quantity from inventory where
-            // item_id="+"'"+s1+"'");
-
-            int id = Integer.parseInt(c1);
-            rs1 = s.executeQuery("select quantity from addproduct where item_id=" + "'" + s1 + "'");
-
-            // jLabel6.setText(s1);
-
-            while (rs1.next()) {
-                String id1 = rs1.getString("quantity");
-                int id2 = Integer.parseInt(id1);
-
-                int id3 = id2 - id;
-                s.executeUpdate("Update addproduct set quantity=" + id3 + " where item_id=" + "'" + s1 + "'");
-
-            }
-            rs1.close();
-
-        } catch (SQLException | ClassNotFoundException e1) {
-            System.out.println(e1);
-        }
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection con = DatabaseConnection.getConnection();
-
-            Statement stmt = con.createStatement();
-            DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
-            int selectedRowIndex = jTable5.getSelectedRow();
-            String a = model.getValueAt(selectedRowIndex, 0).toString();
-            String s1 = a;
-            String query = "delete from cart where item_id=" + "'" + s1 + "'";
-            // ResultSet rs=smt3.executeQueryUpdate(query);
-
-            // Statement smt3=con.createStatement();
-            //
-
-            int success = stmt.executeUpdate(query);
-
-            // stmt.close();
-            // con.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            // e.printStackTrace();
-        }
-        jTabbedPane2.setSelectedIndex(9);
-        // TODO add your handling code here:
-    }// GEN-LAST:event_jButton23ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
@@ -3168,11 +3187,14 @@ public class Mainpage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
             // e.printStackTrace();
         }
-        int sum = 0;
+        double sum = 0;
         for (int i = 0; i < jTable6.getRowCount(); i++) {
-            sum = sum + Integer.parseInt(jTable6.getValueAt(i, 4).toString());
+            sum = sum + Double.parseDouble(jTable6.getValueAt(i, 4).toString());
         }
-        jTextField24.setText(Integer.toString(sum));
+
+        jTextField24.setText(String.format(java.util.Locale.US, "%.2f", sum));
+
+
         MessageFormat header = new MessageFormat("Invoice Print");
         MessageFormat footer = new MessageFormat("Page");
         try {
@@ -3235,10 +3257,12 @@ public class Mainpage extends javax.swing.JFrame {
         // TODO add your handling code here:
         String qun = jTextField11.getText();
         String pri = jTextField7.getText();
-        int N3 = Integer.parseInt(pri);
-        int N1 = Integer.parseInt(qun);
-        int N4 = N1 * N3;
-        jTextField8.setText(String.valueOf(N4));
+        double N3 = Double.parseDouble(pri);
+        double N1 = Double.parseDouble(qun);
+        double N4 = N1 * N3;
+        jTextField8.setText(String.format(java.util.Locale.US, "%.2f", N4));
+
+
 
         workWithDatabase1();
     }
@@ -3262,16 +3286,17 @@ public class Mainpage extends javax.swing.JFrame {
 
             String s1 = a;
 
-            int id = Integer.parseInt(c1);
+            double id = Double.parseDouble(c1);
             rs1 = s.executeQuery("select quantity from addproduct where item_id=" + "'" + s1 + "'");
 
             while (rs1.next()) {
                 String id1 = rs1.getString("quantity");
-                int id2 = Integer.parseInt(id1);
+                double id2 = Double.parseDouble(id1);
 
-                int id3 = id2 + id;
+                double id3 = id2 + id;
                 s.executeUpdate("Update addproduct set quantity=" + id3 + " where item_id=" + "'" + s1 + "'");
             }
+
             rs1.close();
         } catch (Exception e1) {
             System.out.println(e1);
@@ -3330,6 +3355,8 @@ public class Mainpage extends javax.swing.JFrame {
     private javax.swing.JPanel homepanelside;
     private javax.swing.JPanel inventorypanelside;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton26;
+
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
