@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS addproduct (
     item_name VARCHAR(150) NOT NULL,
     quantity INTEGER NOT NULL,
     price NUMERIC(15, 2) NOT NULL,
-    mfd VARCHAR(50),
-    expd VARCHAR(50),
+    mfd date,
+    expd date,
     batch_no VARCHAR(50)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS billmain (
     quantity INTEGER,
     price NUMERIC(15, 2),
     totprice NUMERIC(15, 2),
-    date VARCHAR(50)
+    date date
 );
 
 -- Insert a default admin user so you can login immediately
