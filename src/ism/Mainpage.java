@@ -190,6 +190,10 @@ public class Mainpage extends javax.swing.JFrame {
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
+        jButton28 = new javax.swing.JButton();
+        jButton29 = new javax.swing.JButton();
+        jButton30 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
@@ -1136,6 +1140,10 @@ public class Mainpage extends javax.swing.JFrame {
                                                                 Short.MAX_VALUE)
                                                         .addGroup(jPanel4Layout.createSequentialGroup()
                                                                 .addGap(0, 0, Short.MAX_VALUE)
+                                                                .addComponent(jButton30,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 107,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
                                                                 .addComponent(jButton5,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE, 81,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1182,8 +1190,11 @@ public class Mainpage extends javax.swing.JFrame {
                                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 36,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jButton30, javax.swing.GroupLayout.PREFERRED_SIZE, 36,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 36,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(99, 99, 99)))));
 
         jTabbedPane2.addTab("tab3", jPanel4);
@@ -1450,12 +1461,30 @@ public class Mainpage extends javax.swing.JFrame {
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 6, Short.MAX_VALUE)));
 
+        jButton30.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton30.setText("CLEAR");
+        jButton30.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
+
         jButton9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton9.setText("RETURN");
         jButton9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton29.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton29.setText("CLEAR");
+        jButton29.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton29ActionPerformed(evt);
             }
         });
 
@@ -1540,6 +1569,11 @@ public class Mainpage extends javax.swing.JFrame {
                                                                         .addComponent(jButton9,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 111,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addGap(15, 15, 15)
+                                                                        .addComponent(jButton29,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                111,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                         .addGap(35, 35, 35)
                                                         .addGroup(jPanel6Layout
@@ -1577,7 +1611,9 @@ public class Mainpage extends javax.swing.JFrame {
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(36, 36, 36)
-                                                .addComponent(jButton9))
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jButton9)
+                                                        .addComponent(jButton29)))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addGroup(jPanel6Layout
                                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1806,9 +1842,14 @@ public class Mainpage extends javax.swing.JFrame {
         });
 
         jButton15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton15.setText("PURCHASE RETURN");
+        jButton15.setText("CLEAR");
         jButton15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jButton15.setVisible(false); // Disembunyikan - tidak relevan dengan fitur Update Stock
+        jButton15.setVisible(true);
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
 
         table.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -1997,6 +2038,15 @@ public class Mainpage extends javax.swing.JFrame {
             }
         });
 
+        jButton28.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton28.setText("CLEAR");
+        jButton28.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton28.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton28ActionPerformed(evt);
+            }
+        });
+
         jButton17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton17.setText("BACK");
         jButton17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -2027,6 +2077,9 @@ public class Mainpage extends javax.swing.JFrame {
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(15, 15, 15)
                                                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 117,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(15, 15, 15)
+                                                .addComponent(jButton28, javax.swing.GroupLayout.PREFERRED_SIZE, 117,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel9Layout.createSequentialGroup()
                                                 .addGap(130, 130, 130)
@@ -2053,6 +2106,8 @@ public class Mainpage extends javax.swing.JFrame {
                                         .addComponent(dateChooserSales, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton16, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton28, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(30, 30, 30)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 275,
@@ -2174,6 +2229,15 @@ public class Mainpage extends javax.swing.JFrame {
             }
         });
 
+        jButton27.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton27.setText("CLEAR");
+        jButton27.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton27ActionPerformed(evt);
+            }
+        });
+
         jButton19.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton19.setText("BACK");
         jButton19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -2198,6 +2262,10 @@ public class Mainpage extends javax.swing.JFrame {
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
                                         javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, 114,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 83,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(143, 143, 143))
@@ -2218,6 +2286,7 @@ public class Mainpage extends javax.swing.JFrame {
                                 .addGap(49, 49, 49)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jButton18)
+                                        .addComponent(jButton27)
                                         .addComponent(jButton19))
                                 .addContainerGap(136, Short.MAX_VALUE)));
 
@@ -3013,6 +3082,53 @@ public class Mainpage extends javax.swing.JFrame {
         logoutpanelside.setBackground(defaultcolor);
     }// GEN-LAST:event_jButton19ActionPerformed
 
+    // === CLEAR BUTTON ACTION LISTENERS ===
+
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Search Product Clear
+        TextBox7.setText("");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        TextBox7.requestFocus();
+    }
+
+    private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Return Product Clear
+        jTextField9.setText("");
+        jTextField10.setText("");
+        jTextField11.setText("");
+        jTextField12.setText("");
+        jTextField19.setText("");
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        model.setRowCount(0);
+    }
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Update Stock Clear
+        jTextField15.setText("");
+        jTextField16.setText("");
+        jTextField17.setText("");
+        jTextField13.setText("");
+        jTextField14.setText("");
+        jTextField18.setText("");
+    }
+
+    private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Track Sales Clear
+        dateChooserSales.setDate(null);
+        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        model.setRowCount(0);
+    }
+
+    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Update Login Clear
+        jTextField20.setText("");
+        jTextField21.setText("");
+        jPasswordField1.setText("");
+        jPasswordField2.setText("");
+        jTextField20.requestFocus();
+    }
+
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
         if (jTextField20.getText().length() == 0)
@@ -3633,6 +3749,10 @@ public class Mainpage extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JButton jButton27;
+    private javax.swing.JButton jButton28;
+    private javax.swing.JButton jButton29;
+    private javax.swing.JButton jButton30;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
