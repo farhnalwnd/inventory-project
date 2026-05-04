@@ -42,6 +42,17 @@ public class Mainpage extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(8, 61, 65)));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icon/logo.png")));
+
+        // Update Stock: Kunci field Read-Only, hanya Quantity (jTextField17) yang bisa diisi
+        jTextField15.setEditable(false); // Item ID - dikunci
+        jTextField16.setEditable(false); // Item Name - dikunci
+        jTextField13.setEditable(false); // Price Per Unit - dikunci
+        jTextField14.setEditable(false); // Total Price - dikunci
+        jTextField15.setBackground(new java.awt.Color(220, 220, 220));
+        jTextField16.setBackground(new java.awt.Color(220, 220, 220));
+        jTextField13.setBackground(new java.awt.Color(220, 220, 220));
+        jTextField14.setBackground(new java.awt.Color(220, 220, 220));
+
     }
 
     /**
@@ -382,7 +393,7 @@ public class Mainpage extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("PURCHASE");
+        jLabel7.setText("UPDATE STOCK");
 
         javax.swing.GroupLayout purchasepanelsideLayout = new javax.swing.GroupLayout(purchasepanelside);
         purchasepanelside.setLayout(purchasepanelsideLayout);
@@ -1724,7 +1735,7 @@ public class Mainpage extends javax.swing.JFrame {
 
         jLabel40.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel40.setText("PURCHASE");
+        jLabel40.setText("UPDATE STOCK");
 
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
@@ -1753,6 +1764,11 @@ public class Mainpage extends javax.swing.JFrame {
         jButton12.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton12.setText("SEARCH");
         jButton12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchProductForUpdate(evt);
+            }
+        });
 
         jLabel41.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel41.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1781,12 +1797,18 @@ public class Mainpage extends javax.swing.JFrame {
         });
 
         jButton14.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jButton14.setText("PURCHASE");
+        jButton14.setText("UPDATE STOCK");
         jButton14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateStockActionPerformed(evt);
+            }
+        });
 
         jButton15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton15.setText("PURCHASE RETURN");
         jButton15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton15.setVisible(false); // Disembunyikan - tidak relevan dengan fitur Update Stock
 
         table.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -2758,6 +2780,137 @@ public class Mainpage extends javax.swing.JFrame {
     private void jTextField18ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField18ActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_jTextField18ActionPerformed
+
+    /**
+     * Mencari produk berdasarkan Item ID di tabel addproduct dan mengisi field secara otomatis.
+     * Dipanggil oleh tombol SEARCH (jButton12).
+     */
+    private void searchProductForUpdate(java.awt.event.ActionEvent evt) {
+        String itemId = jTextField18.getText().trim();
+        // Validasi Bug #2: Item ID tidak boleh kosong
+        if (itemId.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Masukkan Item ID terlebih dahulu di kolom pencarian.",
+                "Input Tidak Valid",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validasi Bug #3: Gunakan PreparedStatement (hindari SQL Injection)
+        String query = "SELECT item_id, item_name, price FROM addproduct WHERE item_id = ?";
+        // Validasi Bug #4: Gunakan try-with-resources (hindari Resource Leak)
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setString(1, itemId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    jTextField15.setText(rs.getString("item_id"));
+                    jTextField16.setText(rs.getString("item_name"));
+                    jTextField13.setText(String.valueOf(rs.getDouble("price")));
+                    jTextField17.setText(""); // Kosongkan field Quantity untuk input baru
+                    jTextField14.setText(""); // Kosongkan Total Price
+                    jTextField17.requestFocus();
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "Produk dengan ID '" + itemId + "' tidak ditemukan.",
+                        "Tidak Ditemukan",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Gagal mencari produk: " + e.getMessage(),
+                "Error Database",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Mengupdate kuantitas stok barang di tabel addproduct.
+     * Dipanggil oleh tombol UPDATE STOCK (jButton14).
+     */
+    private void updateStockActionPerformed(java.awt.event.ActionEvent evt) {
+        // Validasi Bug #2: Pastikan produk sudah dipilih lewat SEARCH
+        String itemId = jTextField15.getText().trim();
+        if (itemId.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Cari dan pilih produk terlebih dahulu menggunakan tombol SEARCH.",
+                "Input Tidak Valid",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String qtyText = jTextField17.getText().trim();
+        if (qtyText.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Masukkan jumlah stok yang ingin ditambahkan.",
+                "Input Tidak Valid",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validasi Bug #1: Tangkap NumberFormatException jika input bukan angka
+        double addQty;
+        try {
+            addQty = Double.parseDouble(qtyText);
+            if (addQty <= 0) {
+                JOptionPane.showMessageDialog(this,
+                    "Jumlah stok harus lebih dari 0.",
+                    "Input Tidak Valid",
+                    JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                "Quantity harus berupa angka (contoh: 10 atau 5.5).",
+                "Format Tidak Valid",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validasi Bug #3: Gunakan PreparedStatement (hindari SQL Injection)
+        String query = "UPDATE addproduct SET quantity = quantity + ? WHERE item_id = ?";
+        // Validasi Bug #4: Gunakan try-with-resources (hindari Resource Leak)
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setDouble(1, addQty);
+            pstmt.setString(2, itemId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Hitung ulang total price untuk tampilan
+                try {
+                    double price = Double.parseDouble(jTextField13.getText());
+                    jTextField14.setText(String.format(java.util.Locale.US, "%.2f", addQty * price));
+                } catch (NumberFormatException ignored) {}
+
+                JOptionPane.showMessageDialog(this,
+                    "Stok berhasil ditambahkan sebanyak " + addQty + " untuk produk: " + jTextField16.getText(),
+                    "Update Berhasil",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Bersihkan form setelah sukses
+                jTextField15.setText("");
+                jTextField16.setText("");
+                jTextField13.setText("");
+                jTextField14.setText("");
+                jTextField17.setText("");
+                jTextField18.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Update gagal. Produk tidak ditemukan.",
+                    "Gagal",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Gagal mengupdate stok: " + e.getMessage(),
+                "Error Database",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:

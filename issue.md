@@ -1,57 +1,70 @@
-# Issue: Implementasi & Perbaikan Fitur "Track Sales"
+# Issue: Penambahan Fitur "Clear Data" pada Seluruh Modul
 
 ## 🎯 Target Utama
-
-1. **Fitur Track Sales**: Mengimplementasikan pencarian data riwayat penjualan (Track Sales) berdasarkan tanggal.
-2. **Perbaikan UI & Database**: Menambahkan komponen input tanggal yang hilang pada antarmuka, menyambungkan fungsi tombol _Search_, dan menampilkan data penjualan secara akurat dari database.
+- **Fitur Add Product**
+- **Fitur Search Product**
+- **Fitur Lainnya**: Update Stock, Return Product, Track Sales, dan Update Login Credentials.
 
 ---
 
 ## 📋 Task Description
 
-Saat ini, tampilan fitur "Track Sales" (berada di dalam `jPanel9` atau `tab8` pada `Mainpage.java`) memiliki beberapa kekurangan mendasar: terdapat label _"Search Date"_ dan tombol _"SEARCH"_ (`jButton16`), namun **tidak ada komponen input (seperti kalender/JDateChooser atau text field) untuk memasukkan tanggal**. Selain itu, tombol _Search_ belum memiliki aksi (event listener) sama sekali.
+Saat ini, beberapa fitur dalam aplikasi inventaris (`Mainpage.java`) memiliki *form* pengisian data yang panjang. Pengguna memerlukan tombol **"CLEAR"** untuk menghapus isi teks atau tabel dengan cepat tanpa harus menghapusnya satu per satu. 
 
-Tugas kamu sebagai developer adalah menyelesaikan modul Track Sales ini secara penuh.
+Tugas kamu sebagai developer adalah memeriksa setiap modul fitur, menambahkan tombol "CLEAR" jika belum ada, dan memberikan logika untuk membersihkan sisa inputan data.
 
-### 1. Perbaikan Antarmuka Pengguna (UI)
+### 1. Fitur Add Product (`jPanel3`)
+- **Tugas**: Periksa keberadaan tombol "CLEAR". Jika sudah ada (seperti `jButton20`), berikan implementasi fungsi pada event `actionPerformed`. Jika belum, tambahkan tombol tersebut.
+- **Aksi Pembersihan**: Kosongkan nilai dari:
+  - `TextBox1` (Item Id)
+  - `TextBox2` (Item Name)
+  - `TextBox3` (Quantity)
+  - `TextBox4` (Price)
+  - Pindahkan fokus kursor kembali ke `TextBox1` (`TextBox1.requestFocus()`).
 
-- Buka desain UI `Mainpage.java` menggunakan GUI Builder (seperti di NetBeans).
-- Cari panel untuk fitur **Track Sales** (`jPanel9`).
-- Tambahkan komponen kalender **`JDateChooser`** (atau `JTextField` jika tidak ada library kalender) tepat di sebelah label "Search Date" (`jLabel43`) dan sebelum tombol "SEARCH" (`jButton16`).
-- Beri nama variabel yang jelas pada komponen input tersebut, misalnya `dateChooserSales`.
+### 2. Fitur Search Product (`jPanel4`)
+- **Tugas**: Periksa keberadaan tombol "CLEAR" (seperti `jButton26`).
+- **Aksi Pembersihan**: Kosongkan *field* pencarian (`TextBox7`) dan **bersihkan seluruh isi tabel** (`jTable1`).
+- *Hint*: Gunakan `((DefaultTableModel) jTable1.getModel()).setRowCount(0);` untuk mengosongkan tabel.
 
-### 2. Implementasi Logika Pencarian (Event Listener)
+### 3. Fitur Update Stock (`jPanel7`)
+- **Tugas**: Tambahkan tombol "CLEAR" baru di sebelah tombol "UPDATE STOCK" (`jButton14`).
+- **Aksi Pembersihan**: Kosongkan `jTextField15`, `jTextField16`, `jTextField17`, `jTextField13`, `jTextField14`, dan kolom pencarian ID `jTextField18`.
 
-- Tambahkan event `ActionListener` pada tombol "SEARCH" (`jButton16`). Kamu bisa melakukannya lewat GUI Builder (klik kanan -> _Events_ -> _Action_ -> _actionPerformed_).
-- Di dalam metode `jButton16ActionPerformed`, ambil nilai tanggal dari komponen input:
-  - Jika menggunakan `JDateChooser`: Ambil tanggal, lalu format menjadi _string_ berformat `yyyy-MM-dd` menggunakan `SimpleDateFormat`.
-  - Jika menggunakan `JTextField`: Ambil teks langsung.
+### 4. Fitur Return Product (`jPanel5`)
+- **Tugas**: Tambahkan tombol "CLEAR" pada antarmuka retur barang.
+- **Aksi Pembersihan**: Kosongkan semua *text field* (`jTextField9` s/d `jTextField12`, dan `jTextField19`). Bersihkan juga tabel riwayat pembelian (`jTable3`).
 
-### 3. Query Database & Tampilkan ke Tabel
+### 5. Fitur Track Sales (`jPanel9`)
+- **Tugas**: Tambahkan tombol "CLEAR" di sebelah tombol "SEARCH".
+- **Aksi Pembersihan**: Reset input tanggal (`dateChooserSales`) dan bersihkan tabel hasil pencarian penjualan (`jTable4`).
 
-- Gunakan `PreparedStatement` untuk mengeksekusi query pencarian.
-- Query SQL: `SELECT bill_no, item_id, item_name, quantity, price, date FROM billmain WHERE date = ?`
-- Bersihkan tabel `jTable4` sebelum memuat data baru (`model.setRowCount(0)`).
-- Masukkan hasil eksekusi (`ResultSet`) ke dalam `jTable4` baris demi baris menggunakan `model.addRow(...)`.
+### 6. Fitur Update Login Credentials (`jPanel8`)
+- **Tugas**: Tambahkan tombol "CLEAR" di sebelah tombol "UPDATE" jika belum ada.
+- **Aksi Pembersihan**: Kosongkan kolom input kredensial lama dan baru (`jTextField20`, `jTextField21`, `jPasswordField1`, `jPasswordField2`).
 
 ---
 
 ## 🐛 Informasi Kemungkinan Kesalahan dan Bug (Harus Diwaspadai)
 
-Saat mengerjakan tugas ini, perhatikan beberapa potensi _error_ dan pastikan kamu menanganinya dengan baik:
+Saat mengerjakan tugas penambahan fungsi "Clear" ini, ada beberapa kesalahan (*bug*) teknis yang sangat rentan terjadi. Pastikan untuk memperhatikannya:
 
-1. **`NullPointerException` (Saat Membaca Tanggal)**
-   - **Penyebab**: Jika pengguna langsung menekan tombol SEARCH tanpa memilih/memasukkan tanggal sama sekali, pengambilan nilai kalender akan mengembalikan `null`. Memanggil format _date_ pada nilai `null` akan memicu _crash_.
-   - **Solusi**: Tambahkan validasi di awal `actionPerformed`. Contoh: `if (dateChooserSales.getDate() == null) { JOptionPane... return; }`.
+1. **`NullPointerException` saat Membersihkan Tabel**
+   - **Penyebab**: Memanggil metode pada model tabel yang salah atau gagal di-*cast* dengan tepat.
+   - **Solusi**: Wajib mengambil model tabel terlebih dahulu dengan cara aman:
+     ```java
+     DefaultTableModel model = (DefaultTableModel) jTableX.getModel();
+     model.setRowCount(0); // Membersihkan tabel dengan aman
+     ```
 
-2. **SQL Injection Vulnerability**
-   - **Penyebab**: Menempelkan string tanggal langsung ke dalam query, contoh: `"SELECT ... WHERE date = '" + inputTanggal + "'"`.
-   - **Solusi**: Wajib menggunakan `PreparedStatement` dengan sintaks parameter `?`, kemudian memanggil `pstmt.setDate(1, java.sql.Date.valueOf(inputTanggal))` atau `pstmt.setString(1, inputTanggal)`.
+2. **Kesalahan Penanganan Komponen Non-Text (`JDateChooser`)**
+   - **Penyebab**: Menggunakan `.setText("")` pada objek seperti *date picker* atau tabel yang dapat memicu *crash* saat dikompilasi.
+   - **Solusi**: Untuk mengosongkan *JDateChooser*, Anda harus menggunakan perintah `setDate(null)`.
 
-3. **Format Tanggal Tidak Cocok (Data Tidak Ditemukan)**
-   - **Penyebab**: Tipe data kolom `date` di tabel PostgreSQL (`billmain`) adalah `date` (format YYYY-MM-DD). Jika kamu mengirim format seperti `DD/MM/YYYY`, query tidak akan menemukan data atau malah _error_.
-   - **Solusi**: Pastikan Java memformat tanggal ke struktur `yyyy-MM-dd` sebelum parameter di-_set_ ke dalam _Prepared Statement_. Gunakan `SimpleDateFormat("yyyy-MM-dd")`.
+3. **Field Berstatus *Read-Only* Gagal Direset (Logika Validasi)**
+   - **Penyebab**: Terkadang mengosongkan *field* yang sudah di set `setEditable(false)` akan memicu kesalahan pada beberapa *listener* turunan.
+   - **Solusi**: Perintah `setText("")` tetap berfungsi pada *read-only field*. Pastikan saja setelah memanggilnya, Anda tidak mencoba menulis ke *field* itu lagi, melainkan berikan fokus ke kolom yang *editable* dengan metode `.requestFocus()`.
 
-4. **Koneksi / Resource Leak**
-   - **Penyebab**: Objek `Connection`, `PreparedStatement`, atau `ResultSet` tidak ditutup. Hal ini dapat menghabiskan memori dan memutus akses ke database jika dilakukan berulang kali.
-   - **Solusi**: Gunakan pola _Try-With-Resources_ atau pastikan `c.close()`, `pstmt.close()`, dan `rs.close()` dipanggil pada blok `finally`.
+4. **Tumpang Tindih Action Listener (Duplikasi Event)**
+   - **Penyebab**: Terlalu sering menekan "Double Click" saat mendesain UI di *NetBeans/GUI Builder* yang secara tidak sengaja membuat dua buah deklarasi fungsi `actionPerformed` untuk satu tombol.
+   - **Solusi**: Lakukan pengecekan pada kode *Source*. Pastikan satu tombol hanya terhubung pada satu aksi penanganan (*event handler*) yang berisi kumpulan perintah *clear data*.
