@@ -14,14 +14,10 @@ public class ISM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         Loginpage LoginpageFrame = new Loginpage();
         LoginpageFrame.setVisible(true);
         LoginpageFrame.pack();
         LoginpageFrame.setLocationRelativeTo(null);
     }
-    
+
 }
-
-   
-

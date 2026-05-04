@@ -1489,7 +1489,7 @@ public class Mainpage extends javax.swing.JFrame {
 
                 },
                 new String[] {
-                        "Item ID", "Item Name", "Quanttiy", "Price", "Total Price"
+                        "Item ID", "Item Name", "Quantity", "Price", "Total Price", "Returned"
                 }));
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -3207,99 +3207,127 @@ public class Mainpage extends javax.swing.JFrame {
     }// GEN-LAST:event_jButton25ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
         jTextField9.setText("");
         jTextField10.setText("");
         jTextField11.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
-        String ii = jTextField12.getText();
+        String billNo = jTextField12.getText();
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        try {
-            Class.forName("org.postgresql.Driver");
-            Connection con = DatabaseConnection.getConnection();
+        model.setRowCount(0); // Bersihkan tabel sebelum pencarian baru
 
-            Statement stmt = con.createStatement();
-            String query = "select * from billmain where bill_no='" + ii + "' ";
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                String id = rs.getString("item_id");
-                String name = rs.getString("item_name");
-                String qun = rs.getString("quantity");
-                String price = rs.getString("price");
-
-                String tot = rs.getString("totprice");
-                model.addRow(new Object[] { id, name, qun, price, tot });
+        String query = "SELECT item_id, item_name, quantity, price, totprice, returned_quantity FROM billmain WHERE bill_no = ?";
+        
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            
+            pstmt.setString(1, billNo);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String id = rs.getString("item_id");
+                    String name = rs.getString("item_name");
+                    int qty = rs.getInt("quantity");
+                    double price = rs.getDouble("price");
+                    double tot = rs.getDouble("totprice");
+                    int retQty = rs.getInt("returned_quantity");
+                    
+                    model.addRow(new Object[] { id, name, qty, price, tot, retQty });
+                }
             }
-            rs.close();
-            // stmt.close();
-            // con.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-            // e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal mencari bill: " + e.getMessage());
         }
-
     }// GEN-LAST:event_jButton11ActionPerformed
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jTable3MouseClicked
-        // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         int selectedRowIndex = jTable3.getSelectedRow();
-        jTextField9.setText(model.getValueAt(selectedRowIndex, 0).toString());
-        jTextField10.setText(model.getValueAt(selectedRowIndex, 1).toString());
-        jTextField11.setText(model.getValueAt(selectedRowIndex, 2).toString());
-        jTextField7.setText(model.getValueAt(selectedRowIndex, 3).toString());
-        jTextField8.setText(model.getValueAt(selectedRowIndex, 4).toString());
+        if (selectedRowIndex != -1) {
+            jTextField9.setText(model.getValueAt(selectedRowIndex, 0).toString());
+            jTextField10.setText(model.getValueAt(selectedRowIndex, 1).toString());
+            jTextField11.setText(""); // Kosongkan sesuai instruksi issue.md
+            jTextField7.setText(model.getValueAt(selectedRowIndex, 3).toString());
+            jTextField8.setText(""); // Kosongkan sesuai instruksi issue.md
+        }
     }// GEN-LAST:event_jTable3MouseClicked
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-        String qun = jTextField11.getText();
-        String pri = jTextField7.getText();
-        double N3 = Double.parseDouble(pri);
-        double N1 = Double.parseDouble(qun);
-        double N4 = N1 * N3;
-        jTextField8.setText(String.format(java.util.Locale.US, "%.2f", N4));
-
-
-
-        workWithDatabase1();
-    }
-
-    public void workWithDatabase1() {
-        Connection c = null;
-        Statement s = null;
-        ResultSet rs1 = null;
-        int flag = 0;
         try {
-
-            Class.forName("org.postgresql.Driver");
-            c = DatabaseConnection.getConnection();
-            s = c.createStatement();
-
-            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
             int selectedRowIndex = jTable3.getSelectedRow();
-            String a = model.getValueAt(selectedRowIndex, 0).toString();
-
-            String c1 = jTextField11.getText();
-
-            String s1 = a;
-
-            double id = Double.parseDouble(c1);
-            rs1 = s.executeQuery("select quantity from addproduct where item_id=" + "'" + s1 + "'");
-
-            while (rs1.next()) {
-                String id1 = rs1.getString("quantity");
-                double id2 = Double.parseDouble(id1);
-
-                double id3 = id2 + id;
-                s.executeUpdate("Update addproduct set quantity=" + id3 + " where item_id=" + "'" + s1 + "'");
+            if (selectedRowIndex == -1) {
+                JOptionPane.showMessageDialog(this, "Silakan pilih produk yang ingin di-return dari tabel terlebih dahulu.");
+                return;
             }
 
-            rs1.close();
-        } catch (Exception e1) {
-            System.out.println(e1);
+            String billNo = jTextField12.getText();
+            String itemId = jTable3.getModel().getValueAt(selectedRowIndex, 0).toString();
+            int purchasedQty = Integer.parseInt(jTable3.getModel().getValueAt(selectedRowIndex, 2).toString());
+            int alreadyReturned = Integer.parseInt(jTable3.getModel().getValueAt(selectedRowIndex, 5).toString());
+            
+            String qtyInputText = jTextField11.getText();
+            if (qtyInputText.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Masukkan jumlah yang ingin di-return.");
+                return;
+            }
+            
+            int returnQty = Integer.parseInt(qtyInputText);
+            int availableToReturn = purchasedQty - alreadyReturned;
+
+            if (returnQty <= 0) {
+                JOptionPane.showMessageDialog(this, "Jumlah return harus lebih dari 0.");
+                return;
+            }
+
+            if (returnQty > availableToReturn) {
+                JOptionPane.showMessageDialog(this, "Gagal! Sisa kuota return hanya: " + availableToReturn);
+                return;
+            }
+
+            double itemPrice = Double.parseDouble(jTextField7.getText());
+            double totalReturnPrice = returnQty * itemPrice;
+            jTextField8.setText(String.format(java.util.Locale.US, "%.2f", totalReturnPrice));
+
+            processProductReturn(billNo, itemId, returnQty);
+            
+            // Refresh tampilan tabel setelah sukses
+            jButton11ActionPerformed(null);
+            
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Input tidak valid! Pastikan jumlah adalah angka.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + ex.getMessage());
+        }
+    }
+
+    public void processProductReturn(String billNo, String itemId, int returnQty) {
+        String updateInvQuery = "UPDATE addproduct SET quantity = quantity + ? WHERE item_id = ?";
+        String updateBillQuery = "UPDATE billmain SET returned_quantity = returned_quantity + ? WHERE bill_no = ? AND item_id = ?";
+
+        try (Connection c = DatabaseConnection.getConnection()) {
+            c.setAutoCommit(false);
+
+            try (PreparedStatement pstmtInv = c.prepareStatement(updateInvQuery);
+                 PreparedStatement pstmtBill = c.prepareStatement(updateBillQuery)) {
+
+                // 1. Update Stok Inventaris
+                pstmtInv.setInt(1, returnQty);
+                pstmtInv.setString(2, itemId);
+                pstmtInv.executeUpdate();
+
+                // 2. Update Record Return di Bill
+                pstmtBill.setInt(1, returnQty);
+                pstmtBill.setString(2, billNo);
+                pstmtBill.setString(3, itemId);
+                pstmtBill.executeUpdate();
+
+                c.commit();
+                JOptionPane.showMessageDialog(this, "Return produk berhasil diproses!");
+            } catch (Exception e) {
+                c.rollback();
+                throw e;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memproses return ke database: " + e.getMessage());
         }
     }// GEN-LAST:event_jButton9ActionPerformed
 

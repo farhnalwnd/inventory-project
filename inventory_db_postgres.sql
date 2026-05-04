@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS billmain (
     item_id VARCHAR(50),
     item_name VARCHAR(150),
     quantity INTEGER,
+    returned_quantity INTEGER DEFAULT 0,
     price NUMERIC(15, 2),
     totprice NUMERIC(15, 2),
     date date
