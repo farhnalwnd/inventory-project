@@ -188,6 +188,7 @@ public class Mainpage extends javax.swing.JFrame {
         jTable4 = new javax.swing.JTable();
         jPanel24 = new javax.swing.JPanel();
         jLabel43 = new javax.swing.JLabel();
+        dateChooserSales = new com.toedter.calendar.JDateChooser();
         jButton16 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
@@ -1961,9 +1962,18 @@ public class Mainpage extends javax.swing.JFrame {
                                 .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 35,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)));
 
+        // Setup komponen input tanggal untuk Track Sales
+        dateChooserSales.setDateFormatString("yyyy-MM-dd");
+        dateChooserSales.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         jButton16.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton16.setText("SEARCH");
         jButton16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
 
         jButton17.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton17.setText("BACK");
@@ -1986,11 +1996,14 @@ public class Mainpage extends javax.swing.JFrame {
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel9Layout.createSequentialGroup()
-                                                .addGap(158, 158, 158)
+                                                .addGap(60, 60, 60)
                                                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(283, 283, 283)
+                                                .addGap(15, 15, 15)
+                                                .addComponent(dateChooserSales, javax.swing.GroupLayout.PREFERRED_SIZE, 200,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(15, 15, 15)
                                                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 117,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel9Layout.createSequentialGroup()
@@ -2014,6 +2027,8 @@ public class Mainpage extends javax.swing.JFrame {
                                 .addGroup(jPanel9Layout
                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jPanel24, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(dateChooserSales, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButton16, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -2776,6 +2791,61 @@ public class Mainpage extends javax.swing.JFrame {
         logoutpanelside.setBackground(defaultcolor);
     }// GEN-LAST:event_jButton17ActionPerformed
 
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Validasi 1: Pastikan pengguna sudah memilih tanggal (hindari NullPointerException)
+        java.util.Date selectedDate = dateChooserSales.getDate();
+        if (selectedDate == null) {
+            JOptionPane.showMessageDialog(this,
+                "Silakan pilih tanggal terlebih dahulu sebelum melakukan pencarian.",
+                "Input Tidak Valid",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Format tanggal ke yyyy-MM-dd agar sesuai tipe kolom 'date' di PostgreSQL
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(selectedDate);
+
+        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        model.setRowCount(0); // Bersihkan tabel sebelum memuat data baru
+
+        // Validasi 2: Gunakan PreparedStatement (hindari SQL Injection)
+        String query = "SELECT bill_no, item_id, item_name, quantity, price, date FROM billmain WHERE CAST(date AS DATE) = CAST(? AS DATE)";
+
+        // Validasi 4: Gunakan try-with-resources (hindari Resource Leak)
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            // Validasi 3: Set parameter dengan tipe yang benar (hindari Format Date Mismatch)
+            pstmt.setString(1, formattedDate);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                boolean hasData = false;
+                while (rs.next()) {
+                    hasData = true;
+                    String billNo = rs.getString("bill_no");
+                    String itemId = rs.getString("item_id");
+                    String itemName = rs.getString("item_name");
+                    int quantity = rs.getInt("quantity");
+                    double price = rs.getDouble("price");
+                    String date = rs.getString("date");
+                    model.addRow(new Object[]{billNo, itemId, itemName, quantity, price, date});
+                }
+                if (!hasData) {
+                    JOptionPane.showMessageDialog(this,
+                        "Tidak ada data penjualan pada tanggal: " + formattedDate,
+                        "Data Tidak Ditemukan",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Gagal mengambil data penjualan: " + e.getMessage(),
+                "Error Database",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton19ActionPerformed
         // TODO add your handling code here:
         jTabbedPane2.setSelectedIndex(0);
@@ -3391,6 +3461,7 @@ public class Mainpage extends javax.swing.JFrame {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
+    private com.toedter.calendar.JDateChooser dateChooserSales;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
