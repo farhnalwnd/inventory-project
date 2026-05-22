@@ -19,19 +19,19 @@ Aplikasi desktop untuk mengelola inventaris barang, dibangun menggunakan Java Sw
 
 ## Teknologi
 
-| Komponen | Detail |
-|---|---|
-| Bahasa | Java |
-| GUI Framework | Java Swing (NetBeans) |
-| Database | PostgreSQL |
-| Driver | `org.postgresql.Driver` (JDBC) |
+| Komponen      | Detail                         |
+| ------------- | ------------------------------ |
+| Bahasa        | Java                           |
+| GUI Framework | Java Swing (NetBeans)          |
+| Database      | PostgreSQL                     |
+| Driver        | `org.postgresql.Driver` (JDBC) |
 
 ---
 
 ## Persyaratan
 
 - Java JDK 8+
-- PostgreSQL (aktif berjalan)
+- PostgreSQL
 - NetBeans IDE (opsional, untuk buka project)
 
 ---
@@ -39,16 +39,19 @@ Aplikasi desktop untuk mengelola inventaris barang, dibangun menggunakan Java Sw
 ## Setup & Instalasi
 
 **1. Clone repository**
+
 ```bash
 git clone https://github.com/harishy0406/Inventory-Management-System
 ```
 
 **2. Buat database PostgreSQL**
+
 ```sql
 CREATE DATABASE inventory_db;
 ```
 
 **3. Import schema database**
+
 ```bash
 psql -U postgres -d inventory_db -f inventory_db_postgres.sql
 ```
@@ -56,6 +59,7 @@ psql -U postgres -d inventory_db -f inventory_db_postgres.sql
 **4. Sesuaikan koneksi database**
 
 Edit file `src/ism/DatabaseConnection.java`:
+
 ```java
 private static final String URL = "jdbc:postgresql://localhost:5432/inventory_db";
 private static final String USER = "postgres";
@@ -71,8 +75,8 @@ Buka di NetBeans → klik kanan project → Run
 ## Login Default
 
 | Username | Password |
-|---|---|
-| admin | admin |
+| -------- | -------- |
+| admin    | admin    |
 
 ---
 
@@ -93,12 +97,12 @@ src/ism/
 
 4 tabel utama:
 
-| Tabel | Fungsi |
-|---|---|
-| `login` | Data akun user |
-| `addproduct` | Data & stok barang |
-| `cart` | Keranjang belanja sementara |
-| `billmain` | Riwayat transaksi penjualan |
+| Tabel        | Fungsi                      |
+| ------------ | --------------------------- |
+| `login`      | Data akun user              |
+| `addproduct` | Data & stok barang          |
+| `cart`       | Keranjang belanja sementara |
+| `billmain`   | Riwayat transaksi penjualan |
 
 ---
 
