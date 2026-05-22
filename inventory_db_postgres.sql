@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS billmain (
     date date
 );
 
--- Insert a default admin user so you can login immediately
+-- Insert a default admin user
 INSERT INTO login (username, email, password) 
 VALUES ('admin', 'admin@example.com', 'admin')
 ON CONFLICT (username) DO NOTHING;
