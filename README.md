@@ -41,7 +41,7 @@ Aplikasi desktop untuk mengelola inventaris barang, dibangun menggunakan Java Sw
 **1. Clone repository**
 
 ```bash
-git clone https://github.com/harishy0406/Inventory-Management-System
+git clone https://github.com/farhnalwnd/inventory-project.git
 ```
 
 **2. Buat database PostgreSQL**
