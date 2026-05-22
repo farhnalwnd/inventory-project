@@ -1,77 +1,107 @@
-# Inventory Management System 📦
+# Inventory Management System
 
-## Description 📝
-The Inventory Management System is a Java-based application developed using NetBeans IDE, with MySQL database managed through XAMPP server. This system helps in tracking inventory levels, orders, sales, and deliveries.
+Aplikasi desktop untuk mengelola inventaris barang, dibangun menggunakan Java Swing dan database PostgreSQL.
 
-## Features ✨
-- Add, update, delete inventory items 🖥️
-- Track inventory levels in real-time 📊
-- Generate sales and inventory reports 📈
-- User authentication and authorization 🔒
-- Database backup and restore 💾
+---
 
-## Installation ⚙️
+## Fitur Utama
 
-### Prerequisites
-- [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) ☕
-- [NetBeans IDE](https://netbeans.apache.org/download/index.html) 🖥️
-- [XAMPP](https://www.apachefriends.org/index.html) 🛠️
+- Login & Register user
+- Tambah, cari, dan tampilkan barang (inventaris)
+- Keranjang belanja dan checkout
+- Update stok barang
+- Return produk berdasarkan nomor bill
+- Lacak penjualan per tanggal
+- Cetak invoice
+- Update kredensial login
 
-### Setup
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/harishy0406/Inventory-Management-System
-    ```
+---
 
-2. **Open the project in NetBeans:**
-    - Launch NetBeans IDE.
-    - Navigate to `File -> Open Project`.
-    - Select the cloned project directory.
+## Teknologi
 
-3. **Setup XAMPP:**
-    - Start Apache and MySQL modules in XAMPP control panel.
-    - Open phpMyAdmin and create a database named `inventory_db`.
-    - Import the `inventory_db.sql` file located in the project's `db` directory to set up the database schema and initial data.
+| Komponen | Detail |
+|---|---|
+| Bahasa | Java |
+| GUI Framework | Java Swing (NetBeans) |
+| Database | PostgreSQL |
+| Driver | `org.postgresql.Driver` (JDBC) |
 
-4. **Configure database connection:**
-    - Open `DatabaseConnection.java` file.
-    - Update the database URL, username, and password as per your XAMPP setup.
-    ```java
-    String url = "jdbc:mysql://localhost:3306/inventory_db";
-    String user = "root";
-    String password = "";
-    ```
+---
 
-## Usage 🚀
-1. **Run the project:**
-    - In NetBeans, right-click on the project and select `Run`.
+## Persyaratan
 
-2. **Login:**
-    - Use the default admin credentials to login:
-      - Username: `admin`
-      - Password: `admin`
+- Java JDK 8+
+- PostgreSQL (aktif berjalan)
+- NetBeans IDE (opsional, untuk buka project)
 
-3. **Navigate through the system:**
-    - Add, update, delete inventory items through the provided interfaces.
-    - Generate and view reports for inventory and sales.
+---
 
-## Snapshots 📸
-Here are some snapshots of the project:
+## Setup & Instalasi
 
-### Login Page
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/991f2085-958a-4f25-b656-a794429cb5cb)
+**1. Clone repository**
+```bash
+git clone https://github.com/harishy0406/Inventory-Management-System
+```
 
-## Registeration page
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/4f110363-27b9-4035-ba5b-53219cce1035)
+**2. Buat database PostgreSQL**
+```sql
+CREATE DATABASE inventory_db;
+```
 
-### Dashboard
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/06b4d825-1479-4fc4-b673-30a7e632af41)
+**3. Import schema database**
+```bash
+psql -U postgres -d inventory_db -f inventory_db_postgres.sql
+```
 
-### Inventory Management
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/64884ff5-73e1-49e6-a08c-01eb9143c502)
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/3c7614bf-a892-43d7-bfa2-65d2fd9e2045)
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/fdb69135-ee7b-4d7e-a63b-2ab6d8e0d2db)
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/30f61a99-f9bd-4978-bec1-7bd3260cd2e4)
-![image](https://github.com/harishy0406/Inventory-Management-System/assets/142865295/129df3bb-e6d5-4e33-8125-7f6010c26940)
+**4. Sesuaikan koneksi database**
 
-Thank you for visiting my Inventory Management System project! 😊 Feel free to explore and reach out if you have any questions or opportunities. 📫
+Edit file `src/ism/DatabaseConnection.java`:
+```java
+private static final String URL = "jdbc:postgresql://localhost:5432/inventory_db";
+private static final String USER = "postgres";
+private static final String PASSWORD = "your_password";
+```
+
+**5. Jalankan project**
+
+Buka di NetBeans → klik kanan project → Run
+
+---
+
+## Login Default
+
+| Username | Password |
+|---|---|
+| admin | admin |
+
+---
+
+## Struktur Project
+
+```
+src/ism/
+├── ISM.java              # Entry point (main class)
+├── Loginpage.java        # Halaman login
+├── Registeruser.java     # Halaman registrasi
+├── Mainpage.java         # Dashboard utama (semua fitur)
+└── DatabaseConnection.java # Koneksi ke PostgreSQL
+```
+
+---
+
+## Database
+
+4 tabel utama:
+
+| Tabel | Fungsi |
+|---|---|
+| `login` | Data akun user |
+| `addproduct` | Data & stok barang |
+| `cart` | Keranjang belanja sementara |
+| `billmain` | Riwayat transaksi penjualan |
+
+---
+
+## Lisensi
+
+Project ini dibuat untuk keperluan akademik (tugas OOP).
