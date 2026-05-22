@@ -6,7 +6,7 @@ package ism;
 
 /**
  *
- * @author azmil
+ * @author farhan-alwanda
  */
 public class ISM {
 

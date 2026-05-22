@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  *
- * @author alwand
+ * @author farhan-alwanda
  */
 
 import javax.swing.*;

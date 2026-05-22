@@ -10,7 +10,7 @@ import javax.swing.BorderFactory;
 
 /**
  *
- * @author alwand
+ * @author farhan-alwanda
  */
 
 import javax.swing.*;
